@@ -23,10 +23,21 @@
                   %span
                   .owl-dot-inner
                     = image_tag image.image
+<<<<<<< HEAD
                     
 　　　　　　- if @item.business_stats == 3
             .item-sold-out-badge
               %div SOLD
+=======
+
+            / .owl-dot
+            /   %span
+            /   .owl-dot-inner
+            /     = image_tag @images.second.image,class: 'white'
+
+          .item-sold-out-badge
+            %div SOLD
+>>>>>>> tsurutadesu/master
 
       %table.item-box-container__main-content__item-detail-table
         %tbody

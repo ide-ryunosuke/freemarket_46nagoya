@@ -21,6 +21,7 @@ class ApplicationController < ActionController::Base
     end
   end
 
+<<<<<<< HEAD
   def after_sign_in_path_for(resource)
     root_path # ログイン後に遷移するpathを設定
   end
@@ -29,6 +30,8 @@ class ApplicationController < ActionController::Base
     root_path # ログアウト後に遷移するpathを設定
   end
 
+=======
+>>>>>>> tsurutadesu/master
   private
   def production?
     Rails.env.production?

@@ -86,6 +86,7 @@ RSpec.describe Item, type: :model do
       it "redirects the page to /users/sign_in" do
         get :edit, params: {id: @item.id}
         expect(response).to redirect_to "/users/sign_in"
+<<<<<<< HEAD
       end
     end
   end
@@ -163,6 +164,79 @@ RSpec.describe Item, type: :model do
     describe '#create' do
       it 'カード情報を作成できること' do
         allow(Payjp::Charge).to receive(:create).and_return(PayjpMock.prepare_valid_charge)
+=======
+      end
+    end
+  end
+
+  describe "#update" do
+    context "as an authorized user" do
+      # 正常に記事を更新できるか？
+      it "updates an article" do
+        sign_in @user
+        item_params = {title: "うんこちゃん"}
+        patch :update, params: {id: @item.id, item: item_params}
+        expect(@item.reload.title).to eq "うんこちゃん"
+      end
+      # 記事を更新した後、更新された記事の詳細ページへリダイレクトするか？
+      it "redirects the page to /items/article.id(1)" do
+        sign_in @user
+        item_params = {title: "うんこちゃん"}
+        patch :update, params: {id: @item.id, item: item_params}
+        expect(response).to redirect_to "/items/1"
+      end
+    end
+    context "with invalid attributes" do
+      # 不正なアトリビュートを含む記事は更新できなくなっているか？
+      it "does not update an article" do
+        sign_in @user
+        item_params = {title: nil}
+        patch :update, params: {id: @item.id, item: item_params}
+        expect(@item.reload.title).to eq "加藤純一"
+      end
+      # 不正な記事を更新しようとすると、再度更新ページへリダイレクトされるか？
+      it "redirects the page to /items/article.id(1)/edit" do
+        sign_in @user
+        item_params = {title: nil}
+        patch :update, params: {id: @item.id, item: item_params}
+        expect(response).to redirect_to "/items/1/edit"
+      end
+    end
+    context "as an unauthorized user" do
+      # 正常なレスポンスが返ってきていないか？
+      it "does not respond successfully" do
+        sign_in @another_user
+        get :edit, params: {id: @item.id}
+        expect(response).to_not be_success
+      end
+      # 他のユーザーが記事を編集しようとすると、ルートページへリダイレクトされているか？
+      it "redirects the page to root_path" do
+        sign_in @another_user
+        get :edit, params: {id: @item.id}
+        expect(response).to redirect_to root_path
+      end
+    end
+    context "as a guest user" do
+      # 302レスポンスを返すか？
+      it "returns a 302 response" do
+        item_params = {
+          title: "加藤純一",
+          text: "加藤純一？　神",
+          user_id: 1
+        }
+        patch :update, params: {id: @item.id, item: item_params}
+        expect(response).to have_http_status "302"
+      end
+      # ログイン画面にリダイレクトされているか？
+      it "redirects the page to /users/sign_in" do
+        item_params = {
+          title: "加藤純一",
+          text: "加藤純一？　神",
+          user_id: 1
+        }
+        patch :update, params: {id: @item.id, item: item_params}
+        expect(response).to redirect_to "/users/sign_in"
+>>>>>>> tsurutadesu/master
       end
     end
 
