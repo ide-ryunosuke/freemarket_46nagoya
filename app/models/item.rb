@@ -2,10 +2,15 @@ class Item < ApplicationRecord
 
   has_many :item_images,dependent: :delete_all
   accepts_nested_attributes_for :item_images
+
   belongs_to :user
+<<<<<<< HEAD
 <<<<<<< HEAD
   # mount_uploader :image, ImageUploader
 =======
+>>>>>>> tsurutadesu/master
+=======
+  belongs_to :category
 >>>>>>> tsurutadesu/master
 
   validates :name, presence: true
@@ -41,4 +46,5 @@ class Item < ApplicationRecord
     "ゆうパック": 3,
     "ゆうメール": 4
   }
+
 end
